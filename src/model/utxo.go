@@ -2,7 +2,7 @@ package model
 
 type UTXO struct {
 	Txid   string `json:"txid"`
-	Vout   int    `json:"vout"`
+	Vout   uint32    `json:"vout"`
 	Status struct {
 		Confirmed   bool   `json:"confirmed"`
 		BlockHeight int    `json:"block_height"`
@@ -11,4 +11,3 @@ type UTXO struct {
 	} `json:"status"`
 	Value int64 `json:"value"`
 }
-

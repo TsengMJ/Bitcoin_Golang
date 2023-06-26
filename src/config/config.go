@@ -1,15 +1,14 @@
 package config
 
 import (
-	"log"
-	"path/filepath"
+	"errors"
 
 	"github.com/spf13/viper"
 )
 
 var config *viper.Viper
 
-func Init(env string) {
+func Init(env string) (error) {
 	var err error
 	config = viper.New()
 	config.SetConfigType("yaml")
@@ -17,15 +16,10 @@ func Init(env string) {
 	config.AddConfigPath("./src/config/")
 	err = config.ReadInConfig()
 	if err != nil {
-		log.Fatal("error on parsing configuration file")
+		return errors.New("failed to read config file: " + err.Error())
 	}
-}
 
-func relativePath(basedir string, path *string) {
-	p := *path
-	if len(p) > 0 && p[0] != '/' {
-		*path = filepath.Join(basedir, p)
-	}
+	return nil
 }
 
 func GetConfig() *viper.Viper {

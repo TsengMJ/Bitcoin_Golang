@@ -12,8 +12,6 @@ type Transaction struct {
 	network *chaincfg.Params
 }
 
-
-
 func CreateTransaction(inputs []*wire.TxIn, outputs []*wire.TxOut) (*wire.MsgTx, error) {
 	// 建立交易
 	tx := wire.NewMsgTx(wire.TxVersion)

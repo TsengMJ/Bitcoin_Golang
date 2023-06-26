@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
 
-	"github.com/TsengMJ/Bitcoin_Golang/src/client"
 	"github.com/TsengMJ/Bitcoin_Golang/src/config"
+	"github.com/TsengMJ/Bitcoin_Golang/src/wallet"
 )
 
 
@@ -12,22 +13,19 @@ func main() {
 	config.Init("development")
 
 	/* Wallet Example */
-	// wallet, _ := wallet.FromPrivateKey("cRBVmt1k3A7cggpxgwexfSYawBsGFiCRzQFpeoV3i5URxrTRmMsi")
+	testWallet, _ := wallet.FromPrivateKey("cPcvGhULd5FcdS4EuMngs83HjiAdqnTQffcDfaufp9JvKDn9UgmM")
 
-	// println("Private Key: ", wallet.GetPrivateKey())
-	// println("Public Key: ", wallet.GetPublicKey())
-	// println("Address P2WPKH: ", wallet.GetAddressP2WPKH())
-	// println("Address P2SH: ", wallet.GetAddressP2SH_P2WPKH())
-	// println("Address P2TR: ", wallet.GetAddressP2TR())
-	// println("Address P2PKH: ", wallet.GetAddressP2PKH())
-
-
-	/* Transaction Example */
-	client := client.NewMempoolSpaceApiClent()
-	utxos, err := client.ListUnspent("tb1q4kgratttzjvkxfmgd95z54qcq7y6hekdm3w56u")
+	receiveAddr, err := testWallet.GetAddressP2WPKH()
 	if err != nil {
 		fmt.Println(err)
+		os.Exit(1)
 	}
 
-	fmt.Printf("%+v\n", utxos)
+	txHash, err := testWallet.Send(wallet.P2WPKH, receiveAddr, 1000, 3)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	fmt.Println("TxHash:", txHash)
 }
